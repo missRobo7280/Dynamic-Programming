@@ -1,0 +1,40 @@
+//Matrix Chain Multiplication problem using Dynamic Programming
+#include<bits/stdc++.h>
+using namespace std;
+int dp[100][100];
+int mcm(int a[],int i,int j)
+{
+    //base case
+    if(i==j)
+    return 0;
+
+    //if we already have a value stored in the dp matrix we fetch that value instead of calculating it several times
+    //this prevents us from calculating the answer to the same sub-problem multiple times
+    //hence this lets us overcome the problem caused by overlapping subproblems.
+    if(dp[i][j]!=-1)
+    {
+    return dp[i][j];
+    }
+
+    dp[i][j]=INT_MAX;
+
+    //k goes from   i   to j-1
+    //recursive case
+    for(int k=i;k<j;k++)
+    {
+        dp[i][j]=min(dp[i][j],mcm(a,i,k) + mcm(a,k+1,j) + (a[i-1]*a[k]*a[j]));
+
+    }
+    return dp[i][j];
+
+
+}
+int main()
+{
+    int n;cin>>n;
+    int a[n];
+    for(int i=0;i<n;i++)cin>>a[i];
+    memset(dp,-1,sizeof(dp));
+    cout<<mcm(a,1,n-1);
+
+}
